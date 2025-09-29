@@ -8,7 +8,7 @@ namespace Domain.Entities
         public DateTime PlaceAt { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        private StatusBooking Status { get; set; }
+        private StatusBooking Status { get; set; } = StatusBooking.Created;
         public StatusBooking CurrentStatus 
         { 
             get 
@@ -17,7 +17,7 @@ namespace Domain.Entities
             } 
         }
 
-        public void ChangeState(ActionState action) 
+        public void ChangeState(ActionState action)
         {
             this.Status = (this.Status, action) switch
             {
