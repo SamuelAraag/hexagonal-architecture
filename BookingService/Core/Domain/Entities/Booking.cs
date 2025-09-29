@@ -16,5 +16,21 @@ namespace Domain.Entities
                 return this.Status; 
             } 
         }
+
+        public void ChangeState(ActionState action) 
+        {
+            this.Status = (this.Status, action) switch
+            {
+                (StatusBooking.Created,     ActionState.Pay)        => StatusBooking.Paid,
+                (StatusBooking.Created,     ActionState.Cancel)     => StatusBooking.Canceled,
+                (StatusBooking.Paid,        ActionState.Finish)     => StatusBooking.Finished,
+                (StatusBooking.Paid,        ActionState.Refound)    => StatusBooking.Refounded,
+                (StatusBooking.Canceled,    ActionState.Reopen)     => StatusBooking.Created,
+                _ => this.Status
+            };
+        }
+
+
+        
     }
 }
