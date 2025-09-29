@@ -9,6 +9,12 @@ namespace Domain.Entities
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         private StatusBooking Status { get; set; }
-        public StatusBooking CurrentStatus { get { return this.Status; } }
+        public StatusBooking CurrentStatus 
+        { 
+            get 
+            { 
+                return this.Status; 
+            } 
+        }
     }
 }
