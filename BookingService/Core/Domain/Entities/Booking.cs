@@ -8,6 +8,8 @@ namespace Domain.Entities
         public DateTime PlaceAt { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        public Guest Guest { get; set; }
+        public Room Room { get; set; }
         private StatusBooking Status { get; set; } = StatusBooking.Created;
         public StatusBooking CurrentStatus 
         { 
