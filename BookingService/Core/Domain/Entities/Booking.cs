@@ -29,8 +29,5 @@ namespace Domain.Entities
                 _ => this.Status
             };
         }
-
-
-        
     }
 }
