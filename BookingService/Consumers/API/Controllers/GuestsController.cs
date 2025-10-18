@@ -19,12 +19,24 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GuestDTO>> Post(CreateGuestRequest guest)
+        public async Task<ActionResult<RequestGuestDTOCreate>> Post(RequestGuestDTOCreate guest)
         {
-            var res = await _guestManager.Create(guest);
+            var request = new CreateGuestRequest
+            {
+                Data = guest
+            };
 
-            //if(res.su)
+            var res = await _guestManager.Create(request);
 
+            if (res.Success) return Created(res.Data.Id.ToString(), res.Data);
+
+            if(res.ErrorCode == Application.ErrorCodes.NotFound)
+            {
+                return BadRequest();
+            }
+
+            _logger.LogError("Response with unknown ErrorCode Returned", res);
+            return BadRequest();
         }
     }
 }

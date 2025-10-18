@@ -4,6 +4,6 @@ namespace Application.Guests.Responses
 {
     public class GuestResponse : Response
     {
-        public GuestDTO Data { get; set; }
+        public ResponseGuestDTOCreate Data { get; set; }
     }
 }

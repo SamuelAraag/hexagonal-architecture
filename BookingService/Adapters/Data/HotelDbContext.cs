@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Data.Guests;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data

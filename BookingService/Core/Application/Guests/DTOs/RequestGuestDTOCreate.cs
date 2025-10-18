@@ -4,20 +4,18 @@ using Domain.ValueObjects;
 
 namespace Application.Guests.DTOs
 {
-    public class GuestDTO
+    public class RequestGuestDTOCreate
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
         public string IdNumber { get; set; }
         public int IdTypeCode { get; set; }
 
-        public static Guest MapToEntity(GuestDTO guestDTO)
+        public static Guest MapToEntity(RequestGuestDTOCreate guestDTO)
         {
             return new Guest
             {
-                Id = guestDTO.Id,
                 Name = guestDTO.Name,
                 Email = guestDTO.Email,
                 Surname = guestDTO.Surname,
