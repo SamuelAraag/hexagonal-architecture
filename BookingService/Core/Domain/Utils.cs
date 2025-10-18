@@ -2,7 +2,7 @@
 {
     public static class Utils
     {
-        public static bool ValidateEmail(string email)
+        public static bool IsValidEmail(string email)
         {
             if (email is null) 
             {

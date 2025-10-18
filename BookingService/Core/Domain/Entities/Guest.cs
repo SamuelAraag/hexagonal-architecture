@@ -39,7 +39,7 @@ namespace Domain.Entities
                 throw new MissingRequiredInformation();
             }
 
-            if (Utils.ValidateEmail(Email))
+            if (!Utils.IsValidEmail(Email))
             {
                 throw new InvalidEmailException();
             }
