@@ -1,10 +1,10 @@
-﻿using Application.Guests.Requests;
-using Application.Guests.Responses;
+﻿using Application.Guests.DTOs;
+using Application.Guests.Requests;
 
 namespace Application.Guests.Ports
 {
     public interface IGuestManager
     {
-        Task<GuestResponse> Create(CreateGuestRequest request); //Vamos usar o conceito de DTO (Data Transfer Object)
+        Task<ResponseGuestDTOCreate> Create(CreateGuestRequest request); //Vamos usar o conceito de DTO (Data Transfer Object)
     }
 }

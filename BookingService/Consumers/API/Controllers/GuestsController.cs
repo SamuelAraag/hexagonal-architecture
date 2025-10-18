@@ -28,7 +28,7 @@ namespace API.Controllers
 
             var res = await _guestManager.Create(request);
 
-            if (res.Success) return Created(res.Data.Id.ToString(), res.Data);
+            if (res.Success) return Created(res.Id.ToString(), res);
 
             if(res.ErrorCode == Application.ErrorCodes.NotFound)
             {

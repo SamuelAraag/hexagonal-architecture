@@ -1,7 +1,6 @@
 ﻿using Application.Guests.DTOs;
 using Application.Guests.Ports;
 using Application.Guests.Requests;
-using Application.Guests.Responses;
 using Domain.Ports;
 
 namespace Application
@@ -15,27 +14,34 @@ namespace Application
             _guestRepository = guestRepository;
         }
 
-        public async Task<GuestResponse> Create(CreateGuestRequest request)
+        public async Task<ResponseGuestDTOCreate> Create(CreateGuestRequest request)
         {
-            var guest = RequestGuestDTOCreate.MapToEntity(request.Data);
-
-            var idResponse = await _guestRepository.Save(guest);
-
-            return new GuestResponse
+            try
             {
-                Success = false,
-                ErrorCode = ErrorCodes.CouldNotStoreData,
-                Message = "There was an error when saving guest",
-                Data = new ResponseGuestDTOCreate
+                var guest = RequestGuestDTOCreate.MapToEntity(request.Data);
+
+                var idResponse = await _guestRepository.Save(guest);
+
+                return new ResponseGuestDTOCreate
                 {
-                    Id = idResponse,
                     Email = request.Data.Email,
                     IdNumber = request.Data.IdNumber,
                     Name = request.Data.Name,
                     Surname = request.Data.Surname,
-                    IdTypeCode = request.Data.IdTypeCode
-                }
-            };
+                    IdTypeCode = request.Data.IdTypeCode,
+                    Success = true,
+                };
+            }
+            catch (Exception)
+            {
+                return new ResponseGuestDTOCreate
+                {
+                    Success = false,
+                    ErrorCode = ErrorCodes.CouldNotStoreData,
+                    Message = "There was an error when saving guest",
+                };
+            }
+
         }
     }
 }
