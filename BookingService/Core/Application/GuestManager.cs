@@ -1,6 +1,7 @@
 ﻿using Application.Guests.DTOs;
 using Application.Guests.Ports;
 using Application.Guests.Requests;
+using Domain.Exceptions;
 using Domain.Ports;
 
 namespace Application
@@ -32,16 +33,43 @@ namespace Application
                     Success = true,
                 };
             }
-            catch (Exception)
+            catch (InvalidPersonDocumentIdException e)
+            {
+                return new ResponseGuestDTOCreate
+                {
+                    Success = false,
+                    ErrorCode = ErrorCodes.InvalidPersonId,
+                    Message = "Error with the Person Document Id: " + e.ToString(),
+                };
+            }
+            catch (MissingRequiredInformation e)
+            {
+                return new ResponseGuestDTOCreate
+                {
+                    Success = false,
+                    ErrorCode = ErrorCodes.MissingRequiredInformation,
+                    Message = "Error with Missing Required Information: " + e.ToString(),
+                };
+
+            }
+            catch (InvalidEmailException e)
+            {
+                return new ResponseGuestDTOCreate
+                {
+                    Success = false,
+                    ErrorCode = ErrorCodes.InvalidEmail,
+                    Message = "Error with Email information: " + e.ToString(),
+                };
+            }
+            catch (Exception e)
             {
                 return new ResponseGuestDTOCreate
                 {
                     Success = false,
                     ErrorCode = ErrorCodes.CouldNotStoreData,
-                    Message = "There was an error when saving guest",
+                    Message = "There was an error when saving guest: " + e.ToString(),
                 };
             }
-
         }
     }
 }

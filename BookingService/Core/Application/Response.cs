@@ -11,5 +11,8 @@
     {
         NotFound = 1,
         CouldNotStoreData = 2,
+        InvalidPersonId = 3,
+        MissingRequiredInformation = 4,
+        InvalidEmail = 5
     }
 }
