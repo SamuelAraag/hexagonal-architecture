@@ -20,7 +20,7 @@ namespace Application
             {
                 var guest = RequestGuestDTOCreate.MapToEntity(request.Data);
 
-                var idResponse = await _guestRepository.Save(guest);
+                var idResponse = await guest.Save(_guestRepository);
 
                 return new ResponseGuestDTOCreate
                 {
