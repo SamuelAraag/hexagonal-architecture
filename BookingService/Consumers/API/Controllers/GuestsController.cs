@@ -23,7 +23,7 @@ namespace API.Controllers
         {
             var res = await _guestManager.Create(guest);
 
-            if(res.su)
+            //if(res.su)
 
         }
     }
