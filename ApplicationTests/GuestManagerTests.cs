@@ -2,10 +2,8 @@
 using Application.Guests.DTOs;
 using Application.Guests.Requests;
 using Domain.Entities;
-using Domain.Exceptions;
 using Domain.Ports;
 using Moq;
-using Xunit.Sdk;
 
 namespace ApplicationTests
 {
@@ -69,6 +67,7 @@ namespace ApplicationTests
 
             Assert.NotNull(res);
             Assert.False(res.Success);
+            Assert.Equal(ErrorCodes.InvalidPersonId, res.ErrorCode);
             Assert.Contains("Error with the Person Document Id:", res.Message);
         }
 
@@ -96,7 +95,67 @@ namespace ApplicationTests
 
             Assert.NotNull(res);
             Assert.False(res.Success);
+            Assert.Equal(ErrorCodes.MissingRequiredInformation, res.ErrorCode);
             Assert.Contains("Error with Missing Required Information:", res.Message);
+        }
+        
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        [InlineData("samuel")]
+        [InlineData("samuel@")]
+        [InlineData("@santos.com")]
+        [InlineData("samuel@santos.")]
+        [InlineData("samuel@santos,com")]
+        public async Task WhenCreateGuest_HasTo_ErrorInvalidEmail(string email)
+        {
+            var guestDTO = new RequestGuestDTOCreate
+            {
+                Name = "Samuel",
+                Surname = "Santos",
+                Email = email,
+                IdNumber = "docNumber",
+                IdTypeCode = 4,
+            };
+
+            var request = new CreateGuestRequest
+            {
+                Data = guestDTO
+            };
+
+            var res = await _guestManager.Create(request);
+
+            Assert.NotNull(res);
+            Assert.False(res.Success);
+            Assert.Equal(ErrorCodes.InvalidEmail, res.ErrorCode);
+            Assert.Contains("Error with Email information: ", res.Message);
+        }
+        
+        [Theory]
+        [InlineData("samuel@santos.com")]
+        [InlineData("samuel.santos@gmail.com")]
+        [InlineData("samuel+test@company.co")]
+        public async Task WhenCreateGuest_HasTo_SuccessValidEmail(string email)
+        {
+            var guestDTO = new RequestGuestDTOCreate
+            {
+                Name = "Samuel",
+                Surname = "Santos",
+                Email = email,
+                IdNumber = "docNumber",
+                IdTypeCode = 4,
+            };
+
+            var request = new CreateGuestRequest
+            {
+                Data = guestDTO
+            };
+
+            var res = await _guestManager.Create(request);
+
+            Assert.NotNull(res);
+            Assert.True(res.Success);
         }
     }
 }

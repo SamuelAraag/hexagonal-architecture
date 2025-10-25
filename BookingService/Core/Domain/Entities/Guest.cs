@@ -22,19 +22,16 @@ namespace Domain.Entities
 
         private void ValidateState()
         {
-            if(
-                DocumentId.IdNumber is null || 
-                DocumentId.IdNumber?.Length < 4 || 
+            if (
+                DocumentId.IdNumber is null ||
+                DocumentId.IdNumber?.Length < 4 ||
                 DocumentId.DocumentType == 0
-                )
+            )
             {
                 throw new InvalidPersonDocumentIdException();
             }
 
-            if (!Name.HasValue() ||
-                !Surname.HasValue() ||
-                !Email.HasValue()
-                )
+            if (!Name.HasValue() || !Surname.HasValue())
             {
                 throw new MissingRequiredInformation();
             }
