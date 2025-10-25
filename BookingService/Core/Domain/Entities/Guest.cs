@@ -1,4 +1,5 @@
 ﻿using Domain.Exceptions;
+using Domain.Extensions;
 using Domain.Ports;
 using Domain.ValueObjects;
 
@@ -22,18 +23,17 @@ namespace Domain.Entities
         private void ValidateState()
         {
             if(
-                DocumentId is null || 
-                DocumentId.IdNumber.Length < 4 || 
+                DocumentId.IdNumber is null || 
+                DocumentId.IdNumber?.Length < 4 || 
                 DocumentId.DocumentType == 0
                 )
             {
                 throw new InvalidPersonDocumentIdException();
             }
 
-            if (
-                Name is null ||
-                Surname is null ||
-                Email is null
+            if (!Name.HasValue() ||
+                !Surname.HasValue() ||
+                !Email.HasValue()
                 )
             {
                 throw new MissingRequiredInformation();

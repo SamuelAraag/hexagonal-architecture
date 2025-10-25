@@ -2,8 +2,10 @@
 using Application.Guests.DTOs;
 using Application.Guests.Requests;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Ports;
 using Moq;
+using Xunit.Sdk;
 
 namespace ApplicationTests
 {
@@ -16,7 +18,7 @@ namespace ApplicationTests
             var fake = new Mock<IGuestRepository>();
             fake.Setup(x => x.Save(It.IsAny<Guest>())).Returns(Task.FromResult(11));
 
-            _guestManager = new GuestManager(fake.Object); //Object é a classe criada
+            _guestManager = new GuestManager(fake.Object); //'Object' é a classe criada
         }
 
         [Fact]
@@ -40,6 +42,61 @@ namespace ApplicationTests
 
             Assert.NotNull(res);
             Assert.True(res.Success);
+        }
+
+        [Theory]
+        [InlineData("a")]
+        [InlineData("b")]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task WhenCreateGuest_HasTo_ErrorInvalidDocument(string docNumber)
+        {
+            var guestDTO = new RequestGuestDTOCreate
+            {
+                Name = "Sam",
+                Surname = "Santos",
+                Email = "samuel@santos.com",
+                IdNumber = docNumber,
+                IdTypeCode = 4,
+            };
+
+            var request = new CreateGuestRequest
+            {
+                Data = guestDTO
+            };
+
+            var res = await _guestManager.Create(request);
+
+            Assert.NotNull(res);
+            Assert.False(res.Success);
+            Assert.Contains("Error with the Person Document Id:", res.Message);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public async Task WhenCreateGuest_HasTo_ErrorInvalidName(string name)
+        {
+            var guestDTO = new RequestGuestDTOCreate
+            {
+                Name = name,
+                Surname = "Santos",
+                Email = "samuel@santos.com",
+                IdNumber = "docNumber",
+                IdTypeCode = 4,
+            };
+
+            var request = new CreateGuestRequest
+            {
+                Data = guestDTO
+            };
+
+            var res = await _guestManager.Create(request);
+
+            Assert.NotNull(res);
+            Assert.False(res.Success);
+            Assert.Contains("Error with Missing Required Information:", res.Message);
         }
     }
 }
