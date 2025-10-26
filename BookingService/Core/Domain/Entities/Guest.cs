@@ -15,7 +15,7 @@ namespace Domain.Entities
 
         public async Task<int> Save(IGuestRepository guestRepository)
         {
-            this.ValidateState();
+            ValidateState();
 
             return await guestRepository.Save(this);
         }

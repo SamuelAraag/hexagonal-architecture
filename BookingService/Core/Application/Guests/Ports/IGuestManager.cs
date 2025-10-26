@@ -6,5 +6,8 @@ namespace Application.Guests.Ports
     public interface IGuestManager
     {
         Task<ResponseGuestDTOCreate> Create(CreateGuestRequest request); //Vamos usar o conceito de DTO (Data Transfer Object)
+        Task<ResponseGuestGet> GetById(int guestId);
+        Task<List<ResponseGuestGet>> GetAll();
+        
     }
 }

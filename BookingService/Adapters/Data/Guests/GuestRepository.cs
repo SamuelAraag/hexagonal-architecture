@@ -12,7 +12,12 @@ namespace Data.Guests
             _hotelDbContext = hotelDbContext;    
         }
 
-        public Task<Guest> Get(int id)
+        public Task<List<Guest>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Guest?> Get(int id)
         {
             throw new NotImplementedException();
         }

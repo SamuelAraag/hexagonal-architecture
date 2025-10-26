@@ -2,19 +2,22 @@
 using Application.Guests.DTOs;
 using Application.Guests.Requests;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Ports;
+using Domain.ValueObjects;
 using Moq;
 
 namespace ApplicationTests
 {
     public class GuestManagerTests
     {
-        private readonly GuestManager _guestManager;
+        private GuestManager _guestManager;
 
         public GuestManagerTests()
         {
             var fake = new Mock<IGuestRepository>();
             fake.Setup(x => x.Save(It.IsAny<Guest>())).Returns(Task.FromResult(11));
+            fake.Setup(x => x.GetAll()).Returns(Task.FromResult(GetGuests()));
 
             _guestManager = new GuestManager(fake.Object); //'Object' é a classe criada
         }
@@ -156,6 +159,85 @@ namespace ApplicationTests
 
             Assert.NotNull(res);
             Assert.True(res.Success);
+        }
+        
+        [Fact]
+        public async Task WhenGetAll_HasTo_ReturnListOfGuests()
+        {
+            var res = await _guestManager.GetAll();
+
+            Assert.NotNull(res);
+            Assert.Equal(200, res.First().Id);
+        }
+        
+        [Fact]
+        public async Task WhenGetAll_HasTo_ReturnListEmptyOfGuests()
+        {
+            var guestsEmpty = new List<ResponseGuestGet>();
+            var fake = new Mock<IGuestRepository>();
+
+            fake.Setup(x => x.GetAll()).Returns(Task.FromResult(GetGuests(true)));
+
+            _guestManager = new GuestManager(fake.Object);
+            
+            var res = await _guestManager.GetAll();
+
+            Assert.NotNull(res);
+            Assert.Empty(res);
+        }
+        
+        [Theory]
+        [InlineData(null)]
+        [InlineData(200)]
+        [InlineData(0)]
+        [InlineData(1)]
+
+        public async Task WhenGetById_HasTo_ReturnGuestWithTheSameId(int  guestId)
+        {
+            var res = await _guestManager.GetById(guestId);
+
+            Assert.NotNull(res);
+            Assert.False(res.Success);
+        }
+        
+        [Fact]
+        public async Task WhenGetById_WithInvalidId_ReturnError()
+        {
+            var guestsEmpty = new List<ResponseGuestGet>();
+            var fake = new Mock<IGuestRepository>();
+
+            fake.Setup(x => x.Get(It.IsAny<int>())).Returns(Task.FromResult(GetGuests().First()));
+
+            _guestManager = new GuestManager(fake.Object);
+            
+            var res = await _guestManager.GetById(11);
+
+            Assert.NotNull(res);
+            Assert.Equal(200, res.Id);
+        }
+
+        private static List<Guest> GetGuests(bool isEmpty = false)
+        {
+            var guests = new List<Guest>();
+            if (isEmpty)
+            {
+                return guests;
+            }
+
+            guests.Add(new Guest()
+            {
+                Id = 200,
+                Email = "sam@santos",
+                Name = "Samuel",
+                Surname = "Santos",
+                DocumentId = new PersonId
+                {
+                    DocumentType = DocumentType.Passport,
+                    IdNumber = "1234"
+                }
+            });
+
+            return guests;
         }
     }
 }

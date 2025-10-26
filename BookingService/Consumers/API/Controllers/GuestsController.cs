@@ -20,6 +20,14 @@ namespace API.Controllers
             _logger = logger;
             _guestManager = guestManager;
         }
+        
+        [HttpGet]
+        public async Task<ActionResult<List<ResponseGuestGet>>> GetAll()
+        {
+            var res = await _guestManager.GetAll();
+
+            return Ok(res);
+        }
 
         [HttpPost]
         public async Task<ActionResult<RequestGuestDTOCreate>> Post(RequestGuestDTOCreate guest)
@@ -42,6 +50,16 @@ namespace API.Controllers
 
             _logger.LogError("Response with unknown ErrorCode Returned", res);
             return BadRequest();
+        }
+        
+        [HttpGet("{guestId:int}")]
+        public async Task<ActionResult<RequestGuestDTOCreate>> Get(int guestId)
+        {
+            var res = await _guestManager.GetById(guestId);
+
+            if (res.Success) return Ok(res);
+            
+            return BadRequest(res);
         }
     }
 }

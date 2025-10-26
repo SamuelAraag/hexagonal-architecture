@@ -1,6 +1,7 @@
 ﻿using Application.Guests.DTOs;
 using Application.Guests.Ports;
 using Application.Guests.Requests;
+using Application.Guests.Responses;
 using Domain.Exceptions;
 using Domain.Ports;
 
@@ -70,6 +71,49 @@ namespace Application
                     Message = "There was an error when saving guest: " + e.ToString(),
                 };
             }
+        }
+        
+        public async Task<ResponseGuestGet> GetById(int guestId)
+        {
+            var guest = await _guestRepository.Get(guestId);
+
+            if (guest is null)
+            {
+                return new ResponseGuestGet
+                {
+                    Success = false,
+                    ErrorCode = ErrorCodes.NotFound,
+                    Message = $"No guest record was found with the giver ID: {guestId}",
+                };
+            }
+
+            return new ResponseGuestGet
+            {
+                Email = guest.Email,
+                Id = guest.Id,
+                Name = guest.Name,
+                Surname = guest.Surname,
+                Success = true
+            };
+        }
+        
+        public async Task<List<ResponseGuestGet>> GetAll()
+        {
+            var guest = await _guestRepository.GetAll();
+
+            var guestResponse = guest?.Select(guest =>
+            {
+                return new ResponseGuestGet
+                {
+                    Email = guest.Email,
+                    Id = guest.Id,
+                    Name = guest.Name,
+                    Surname = guest.Surname,
+                    Success = true
+                };
+            });
+
+            return guestResponse?.ToList() ?? new ();
         }
     }
 }

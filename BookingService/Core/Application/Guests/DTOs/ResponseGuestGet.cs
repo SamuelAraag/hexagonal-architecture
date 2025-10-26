@@ -1,0 +1,11 @@
+namespace Application.Guests.DTOs;
+
+public class ResponseGuestGet : Response
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public string Email { get; set; }
+    public string IdNumber { get; set; }
+    public int IdTypeCode { get; set; }
+}
