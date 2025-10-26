@@ -1,6 +1,6 @@
-﻿using Application.Guests.DTOs;
+﻿using Application;
+using Application.Guests.DTOs;
 using Application.Guests.Ports;
-using Application.Guests.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -30,30 +30,25 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RequestGuestDTOCreate>> Post(RequestGuestDTOCreate guest)
+        public async Task<ActionResult<RequestCreateGuestDTO>> Post(RequestCreateGuestDTO createGuest)
         {
-            var request = new CreateGuestRequest
-            {
-                Data = guest
-            };
-
-            var res = await _guestManager.Create(request);
+            var res = await _guestManager.Create(createGuest);
 
             if (res.Success) return Created(res.Id.ToString(), res);
 
             //Pra cada erro, posso ser tratado individualmente
-            if (res.ErrorCode == Application.ErrorCodes.NotFound) { return BadRequest(res); }; 
-            if (res.ErrorCode == Application.ErrorCodes.InvalidPersonId) { return BadRequest(res); };
-            if (res.ErrorCode == Application.ErrorCodes.MissingRequiredInformation) { return BadRequest(res); };
-            if (res.ErrorCode == Application.ErrorCodes.InvalidEmail) { return BadRequest(res); };
-            if (res.ErrorCode == Application.ErrorCodes.CouldNotStoreData) { return BadRequest(res); };
+            if (res.ErrorCode == ErrorCodes.NotFound) { return BadRequest(res); }; 
+            if (res.ErrorCode == ErrorCodes.InvalidPersonId) { return BadRequest(res); };
+            if (res.ErrorCode == ErrorCodes.MissingRequiredInformation) { return BadRequest(res); };
+            if (res.ErrorCode == ErrorCodes.InvalidEmail) { return BadRequest(res); };
+            if (res.ErrorCode == ErrorCodes.CouldNotStoreData) { return BadRequest(res); };
 
             _logger.LogError("Response with unknown ErrorCode Returned", res);
             return BadRequest();
         }
         
         [HttpGet("{guestId:int}")]
-        public async Task<ActionResult<RequestGuestDTOCreate>> Get(int guestId)
+        public async Task<ActionResult<RequestCreateGuestDTO>> Get(int guestId)
         {
             var res = await _guestManager.GetById(guestId);
 

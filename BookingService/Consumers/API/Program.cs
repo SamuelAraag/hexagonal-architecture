@@ -1,7 +1,10 @@
-using Application;
+using Application.Guests;
 using Application.Guests.Ports;
+using Application.Rooms;
+using Application.Rooms.Ports;
 using Data;
 using Data.Guests;
+using Data.Rooms;
 using Domain.Ports;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,16 +17,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-#region IoC
-builder.Services.AddScoped<IGuestManager, GuestManager>();
-builder.Services.AddSingleton<IGuestRepository, GuestRepositoryInMemory>();
-#endregion
-
-//CONEXÃO COM BANCO DE DADOS
 var connectionString = builder.Configuration.GetConnectionString("Main");
 builder.Services
     .AddDbContext<HotelDbContext>(options => 
         options.UseSqlServer(connectionString));
+
+//INJECAO DE DEPENDENCIA
+builder.Services.AddScoped<IGuestManager, GuestManager>();
+builder.Services.AddScoped<IGuestRepository, GuestRepositoryInMemory>();
+
+builder.Services.AddScoped<IRoomManager, RoomManager>();
+builder.Services.AddScoped<IRoomRepository, RoomsRepositoryInMemory>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 var app = builder.Build();

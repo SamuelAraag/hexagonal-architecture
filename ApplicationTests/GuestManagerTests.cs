@@ -1,6 +1,6 @@
 ﻿using Application;
+using Application.Guests;
 using Application.Guests.DTOs;
-using Application.Guests.Requests;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Ports;
@@ -25,7 +25,7 @@ namespace ApplicationTests
         [Fact]
         public async Task WhenCreateGuest_HasTo_CreateSucess()
         {
-            var guestDTO = new RequestGuestDTOCreate
+            var guestDTO = new RequestCreateGuestDTO
             {
                 Name = "Sam",
                 Surname = "Santos",
@@ -34,12 +34,7 @@ namespace ApplicationTests
                 IdTypeCode = 4,
             };
 
-            var request = new CreateGuestRequest
-            {
-                Data = guestDTO
-            };
-
-            var res = await _guestManager.Create(request);
+            var res = await _guestManager.Create(guestDTO);
 
             Assert.NotNull(res);
             Assert.True(res.Success);
@@ -52,7 +47,7 @@ namespace ApplicationTests
         [InlineData(null)]
         public async Task WhenCreateGuest_HasTo_ErrorInvalidDocument(string docNumber)
         {
-            var guestDTO = new RequestGuestDTOCreate
+            var guestDTO = new RequestCreateGuestDTO
             {
                 Name = "Sam",
                 Surname = "Santos",
@@ -61,12 +56,7 @@ namespace ApplicationTests
                 IdTypeCode = 4,
             };
 
-            var request = new CreateGuestRequest
-            {
-                Data = guestDTO
-            };
-
-            var res = await _guestManager.Create(request);
+            var res = await _guestManager.Create(guestDTO);
 
             Assert.NotNull(res);
             Assert.False(res.Success);
@@ -80,7 +70,7 @@ namespace ApplicationTests
         [InlineData(null)]
         public async Task WhenCreateGuest_HasTo_ErrorInvalidName(string name)
         {
-            var guestDTO = new RequestGuestDTOCreate
+            var guestDTO = new RequestCreateGuestDTO
             {
                 Name = name,
                 Surname = "Santos",
@@ -89,12 +79,7 @@ namespace ApplicationTests
                 IdTypeCode = 4,
             };
 
-            var request = new CreateGuestRequest
-            {
-                Data = guestDTO
-            };
-
-            var res = await _guestManager.Create(request);
+            var res = await _guestManager.Create(guestDTO);
 
             Assert.NotNull(res);
             Assert.False(res.Success);
@@ -113,7 +98,7 @@ namespace ApplicationTests
         [InlineData("samuel@santos,com")]
         public async Task WhenCreateGuest_HasTo_ErrorInvalidEmail(string email)
         {
-            var guestDTO = new RequestGuestDTOCreate
+            var guestDTO = new RequestCreateGuestDTO
             {
                 Name = "Samuel",
                 Surname = "Santos",
@@ -122,12 +107,7 @@ namespace ApplicationTests
                 IdTypeCode = 4,
             };
 
-            var request = new CreateGuestRequest
-            {
-                Data = guestDTO
-            };
-
-            var res = await _guestManager.Create(request);
+            var res = await _guestManager.Create(guestDTO);
 
             Assert.NotNull(res);
             Assert.False(res.Success);
@@ -141,7 +121,7 @@ namespace ApplicationTests
         [InlineData("samuel+test@company.co")]
         public async Task WhenCreateGuest_HasTo_SuccessValidEmail(string email)
         {
-            var guestDTO = new RequestGuestDTOCreate
+            var guestDTO = new RequestCreateGuestDTO
             {
                 Name = "Samuel",
                 Surname = "Santos",
@@ -150,12 +130,7 @@ namespace ApplicationTests
                 IdTypeCode = 4,
             };
 
-            var request = new CreateGuestRequest
-            {
-                Data = guestDTO
-            };
-
-            var res = await _guestManager.Create(request);
+            var res = await _guestManager.Create(guestDTO);
 
             Assert.NotNull(res);
             Assert.True(res.Success);

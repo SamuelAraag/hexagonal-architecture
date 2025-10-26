@@ -1,11 +1,9 @@
 ﻿using Application.Guests.DTOs;
 using Application.Guests.Ports;
-using Application.Guests.Requests;
-using Application.Guests.Responses;
 using Domain.Exceptions;
 using Domain.Ports;
 
-namespace Application
+namespace Application.Guests
 {
     public class GuestManager : IGuestManager
     {
@@ -16,21 +14,22 @@ namespace Application
             _guestRepository = guestRepository;
         }
 
-        public async Task<ResponseGuestDTOCreate> Create(CreateGuestRequest request)
+        public async Task<ResponseGuestDTOCreate> Create(RequestCreateGuestDTO request)
         {
             try
             {
-                var guest = RequestGuestDTOCreate.MapToEntity(request.Data);
+                var guest = RequestCreateGuestDTO.MapToEntity(request);
 
                 var idResponse = await guest.Save(_guestRepository);
 
                 return new ResponseGuestDTOCreate
                 {
-                    Email = request.Data.Email,
-                    IdNumber = request.Data.IdNumber,
-                    Name = request.Data.Name,
-                    Surname = request.Data.Surname,
-                    IdTypeCode = request.Data.IdTypeCode,
+                    Id = idResponse,
+                    Email = request.Email,
+                    IdNumber = request.IdNumber,
+                    Name = request.Name,
+                    Surname = request.Surname,
+                    IdTypeCode = request.IdTypeCode,
                     Success = true,
                 };
             }
@@ -99,21 +98,16 @@ namespace Application
         
         public async Task<List<ResponseGuestGet>> GetAll()
         {
-            var guest = await _guestRepository.GetAll();
+            var guests = await _guestRepository.GetAll();
 
-            var guestResponse = guest?.Select(guest =>
+            return guests.Select(guest => new ResponseGuestGet
             {
-                return new ResponseGuestGet
-                {
-                    Email = guest.Email,
-                    Id = guest.Id,
-                    Name = guest.Name,
-                    Surname = guest.Surname,
-                    Success = true
-                };
-            });
-
-            return guestResponse?.ToList() ?? new ();
+                Email = guest.Email,
+                Id = guest.Id,
+                Name = guest.Name,
+                Surname = guest.Surname,
+                Success = true
+            }).ToList();
         }
     }
 }

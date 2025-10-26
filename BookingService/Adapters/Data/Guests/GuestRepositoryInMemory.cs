@@ -31,7 +31,7 @@ namespace Data.Guests
             return Task.FromResult(guest.Id);
         }
 
-        private int GenerateNewId()
+        private static int GenerateNewId()
         {
             if (Guests.Count == 0)
                 return 1;
