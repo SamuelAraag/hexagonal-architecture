@@ -18,6 +18,7 @@ public class RoomManager : IRoomManager
         try
         {
             var room = RequestCreateRoomDTO.MapToEntity(roomRoomDto);
+            
         
             var idRoom = await _roomRepository.Save(room);
 
@@ -30,34 +31,6 @@ public class RoomManager : IRoomManager
                 Price = room.Price,
             };
         }
-        catch (InvalidPersonDocumentIdException e)
-        {
-            return new ResponseGuestDTOCreate
-            {
-                Success = false,
-                ErrorCode = ErrorCodes.InvalidPersonId,
-                Message = "Error with the Person Document Id: " + e.ToString(),
-            };
-        }
-        catch (MissingRequiredInformation e)
-        {
-            return new ResponseGuestDTOCreate
-            {
-                Success = false,
-                ErrorCode = ErrorCodes.MissingRequiredInformation,
-                Message = "Error with Missing Required Information: " + e.ToString(),
-            };
-
-        }
-        catch (InvalidEmailException e)
-        {
-            return new ResponseCreateRoomDTO
-            {
-                Success = false,
-                ErrorCode = ErrorCodes.InvalidEmail,
-                Message = "Error with Email information: " + e.ToString(),
-            };
-        }
         catch (Exception e)
         {
             return new ResponseCreateRoomDTO()
@@ -67,7 +40,6 @@ public class RoomManager : IRoomManager
                 Message = "There was an error when saving Room: " + e.ToString(),
             };
         }
-
     }
 
     public async Task<ResponseRoomGet> GetById(int roomId)

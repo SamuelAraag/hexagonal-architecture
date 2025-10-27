@@ -1,4 +1,6 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Exceptions;
+using Domain.Extensions;
+using Domain.ValueObjects;
 
 namespace Domain.Entities
 {
@@ -27,6 +29,23 @@ namespace Domain.Entities
         public bool HasGuest
         {
             get { return true; } //TODO: VERIFICA SE EXISTEM BOOKINGS ABERTOS PARA ESSE QUARTO
+        }
+        
+        private void ValidateState()
+        {
+            if (
+                !Name.HasValue() ||
+                Level < 1 ||
+                Price is null
+            )
+            {
+                throw new MissingRequiredInformation();
+            }
+
+            if (!InMaintenance)
+            {
+                throw new CouldNotBeCreatedException();
+            }
         }
     }
 }

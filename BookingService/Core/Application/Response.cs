@@ -13,6 +13,9 @@
         CouldNotStoreData = 2,
         InvalidPersonId = 3,
         MissingRequiredInformation = 4,
-        InvalidEmail = 5
+        InvalidEmail = 5,
+        
+        RoomMissingRequiredInformation = 10,
+        RoomCouldNotBeCreated = 11,
     }
 }
