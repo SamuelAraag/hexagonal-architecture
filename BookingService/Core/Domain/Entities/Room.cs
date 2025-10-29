@@ -14,15 +14,9 @@ namespace Domain.Entities
         public bool IsAvaliable {
             get 
             {
-                if (this.InMaintenance || this.HasGuest)
                 {
                     return false;
-                }
-                else
-                {
-                    return true;
-                }
-
+                };
             }
         }
 

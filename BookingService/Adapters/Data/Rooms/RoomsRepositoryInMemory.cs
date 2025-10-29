@@ -21,7 +21,9 @@ public class RoomsRepositoryInMemory : IRoomRepository
     {
         room.Id = GenerateNewId();
 
-        var existing = Rooms.FirstOrDefault(g => g.Id == room.Id);
+        var existing = Rooms.FirstOrDefault(g => g.Id == room.Id || g.Name == room.Name);
+        ValidateState(room);
+        
         if (existing != null)
         {
             throw new Exception("This item already exist in database");
@@ -29,6 +31,14 @@ public class RoomsRepositoryInMemory : IRoomRepository
 
         Rooms.Add(room);
         return Task.FromResult(room.Id);
+    }
+
+    private void ValidateState(Room room)
+    {
+        if (string.IsNullOrWhiteSpace(room.Name))
+        {
+            throw new InvalidRoomDataException();
+        }
     }
 
     private static int GenerateNewId()

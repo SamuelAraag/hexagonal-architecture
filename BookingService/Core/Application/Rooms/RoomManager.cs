@@ -1,5 +1,6 @@
 using Application.Rooms.DTOs;
 using Application.Rooms.Ports;
+using Domain.Exceptions;
 using Domain.Ports;
 
 namespace Application.Rooms;
@@ -18,7 +19,6 @@ public class RoomManager : IRoomManager
         try
         {
             var room = RequestCreateRoomDTO.MapToEntity(roomRoomDto);
-            
         
             var idRoom = await _roomRepository.Save(room);
 
@@ -29,6 +29,16 @@ public class RoomManager : IRoomManager
                 Level = room.Level,
                 InMaintenance = room.InMaintenance,
                 Price = room.Price,
+                Success = true
+            };
+        }
+        catch (InvalidRoomDataException)
+        {
+            return new ResponseCreateRoomDTO()
+            {
+                Success = false,
+                ErrorCode = ErrorCodes.CouldNotStoreData,
+                Message = "There was an error when saving Room: ",
             };
         }
         catch (Exception e)
@@ -63,6 +73,7 @@ public class RoomManager : IRoomManager
             Level = room.Level,
             InMaintenance = room.InMaintenance,
             Price = room.Price,
+            Success = true
         };
     }
 

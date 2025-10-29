@@ -1,7 +1,6 @@
 using Application;
 using Application.Rooms.DTOs;
 using Application.Rooms.Ports;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -37,6 +36,6 @@ public class RoomsController : ControllerBase
         }
 
         _logger.LogError("Response with unknow ErrorCode Returned", res);
-        return BadRequest();
+        return BadRequest(res);
     }
 }
