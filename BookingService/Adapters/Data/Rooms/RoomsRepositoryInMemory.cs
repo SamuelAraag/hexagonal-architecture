@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Ports;
 
 namespace Data.Rooms;
