@@ -21,7 +21,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateRoom([FromBody] RequestCreateRoomDTO roomRequest)
+    public async Task<IActionResult> CreateRoom([FromBody] RequestCreateRoomDto roomRequest)
     {
         var res = await _roomManager.Create(roomRequest);
 

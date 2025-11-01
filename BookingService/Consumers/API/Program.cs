@@ -1,8 +1,12 @@
+using API.DependenceInjection;
+using Application.Bookings;
+using Application.Bookings.Posts;
 using Application.Guests;
 using Application.Guests.Ports;
 using Application.Rooms;
 using Application.Rooms.Ports;
 using Data;
+using Data.Bookings;
 using Data.Guests;
 using Data.Rooms;
 using Domain.Ports;
@@ -23,11 +27,7 @@ builder.Services
         options.UseSqlServer(connectionString));
 
 //INJECAO DE DEPENDENCIA
-builder.Services.AddScoped<IGuestManager, GuestManager>();
-builder.Services.AddScoped<IGuestRepository, GuestRepositoryInMemory>();
-
-builder.Services.AddScoped<IRoomManager, RoomManager>();
-builder.Services.AddScoped<IRoomRepository, RoomsRepositoryInMemory>();
+builder.Services.AddDomainDependencies();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 var app = builder.Build();

@@ -2,7 +2,7 @@ using Domain.ValueObjects;
 
 namespace Application.Rooms.DTOs;
 
-public class ResponseCreateRoomDTO : Response
+public class ResponseCreateRoomDto : Response
 {
     public int Id { get; set; }
     public string Name { get; set; }

@@ -4,6 +4,11 @@ namespace Domain.Entities
 {
     public class Booking
     {
+        public Booking()
+        {
+            PlaceAt = DateTime.UtcNow;
+        }
+        
         public int Id { get; set; }
         public DateTime PlaceAt { get; set; }
         public DateTime Start { get; set; }

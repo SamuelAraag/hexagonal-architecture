@@ -14,11 +14,11 @@ namespace Application.Guests
             _guestRepository = guestRepository;
         }
 
-        public async Task<ResponseGuestDTOCreate> Create(RequestCreateGuestDTO request)
+        public async Task<ResponseGuestDTOCreate> Create(RequestCreateGuestDto request)
         {
             try
             {
-                var guest = RequestCreateGuestDTO.MapToEntity(request);
+                var guest = RequestCreateGuestDto.MapToEntity(request);
 
                 var idResponse = await guest.Save(_guestRepository);
 

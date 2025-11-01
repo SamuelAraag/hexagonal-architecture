@@ -11,18 +11,31 @@ namespace Domain.Entities
         public int Level { get; set; }
         public bool InMaintenance { get; set; }
         public Price Price { get; set; }
-        public bool IsAvaliable {
-            get 
+        public ICollection<Booking> Bookings { get; set; }
+        
+        public bool IsAvailable {
+            get
             {
-                {
+                if (InMaintenance || HasGuest) {
                     return false;
                 };
+                
+                return true;
             }
         }
 
         public bool HasGuest
         {
-            get { return true; } //TODO: VERIFICA SE EXISTEM BOOKINGS ABERTOS PARA ESSE QUARTO
+            get
+            {
+                var notAvailableStatus = new List<Enums.StatusBooking>
+                {
+                    Enums.StatusBooking.Created,
+                    Enums.StatusBooking.Paid
+                };
+                
+                return Bookings.Any(booking => booking.Room.Id == Id && notAvailableStatus.Contains(booking.CurrentStatus));
+            }
         }
         
         private void ValidateState()

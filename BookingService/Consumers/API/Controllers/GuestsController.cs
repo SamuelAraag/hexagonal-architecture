@@ -30,7 +30,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RequestCreateGuestDTO>> Post(RequestCreateGuestDTO createGuest)
+        public async Task<ActionResult<RequestCreateGuestDto>> Post(RequestCreateGuestDto createGuest)
         {
             var res = await _guestManager.Create(createGuest);
 
@@ -48,7 +48,7 @@ namespace API.Controllers
         }
         
         [HttpGet("{guestId:int}")]
-        public async Task<ActionResult<RequestCreateGuestDTO>> Get(int guestId)
+        public async Task<ActionResult<RequestCreateGuestDto>> Get(int guestId)
         {
             var res = await _guestManager.GetById(guestId);
 

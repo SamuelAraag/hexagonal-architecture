@@ -7,4 +7,5 @@ public interface IRoomRepository
     Task<List<Room>> GetAll();
     Task<Room?> Get(int id);
     Task<int> Save(Room guest);
+    Task<Room?> GetAggregate(int id);
 }

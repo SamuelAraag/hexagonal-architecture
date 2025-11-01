@@ -14,15 +14,15 @@ public class RoomManager : IRoomManager
         _roomRepository = roomRepository;
     }
     
-    public async Task<ResponseCreateRoomDTO> Create(RequestCreateRoomDTO roomRoomDto)
+    public async Task<ResponseCreateRoomDto> Create(RequestCreateRoomDto roomRoomDto)
     {
         try
         {
-            var room = RequestCreateRoomDTO.MapToEntity(roomRoomDto);
+            var room = RequestCreateRoomDto.MapToEntity(roomRoomDto);
         
             var idRoom = await _roomRepository.Save(room);
 
-            return new ResponseCreateRoomDTO
+            return new ResponseCreateRoomDto
             {
                 Id = idRoom,
                 Name = room.Name,
@@ -34,7 +34,7 @@ public class RoomManager : IRoomManager
         }
         catch (InvalidRoomDataException)
         {
-            return new ResponseCreateRoomDTO()
+            return new ResponseCreateRoomDto()
             {
                 Success = false,
                 ErrorCode = ErrorCodes.CouldNotStoreData,
@@ -43,7 +43,7 @@ public class RoomManager : IRoomManager
         }
         catch (Exception e)
         {
-            return new ResponseCreateRoomDTO()
+            return new ResponseCreateRoomDto()
             {
                 Success = false,
                 ErrorCode = ErrorCodes.CouldNotStoreData,

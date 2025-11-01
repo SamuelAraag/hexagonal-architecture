@@ -20,6 +20,11 @@ namespace Domain.Entities
             return await guestRepository.Save(this);
         }
 
+        public void Validate()
+        {
+            ValidateState();
+        }
+
         private void ValidateState()
         {
             if (

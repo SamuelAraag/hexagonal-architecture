@@ -6,16 +6,32 @@ namespace Data.Rooms;
 
 public class RoomsRepositoryInMemory : IRoomRepository
 {
+    private readonly IBookingRepository _bookingRepository;
     private static readonly List<Room> Rooms = new();
+
+    public RoomsRepositoryInMemory(IBookingRepository bookingRepository)
+    {
+        _bookingRepository = bookingRepository;
+    }
 
     public Task<List<Room>> GetAll()
     {
         return Task.FromResult(Rooms);
     }
-        
+    
     public Task<Room?> Get(int id)
     {
         return Task.FromResult(Rooms.FirstOrDefault(g => g.Id == id));
+    }
+    
+    public async Task<Room?> GetAggregate(int id)
+    {
+        var roomRespose = Rooms.FirstOrDefault(g => g.Id == id);
+        var bookings = await _bookingRepository.GetRelatedRoom(roomRespose.Id);
+        
+        roomRespose.Bookings = bookings;
+
+        return roomRespose;
     }
 
     public Task<int> Save(Room room)
@@ -34,7 +50,7 @@ public class RoomsRepositoryInMemory : IRoomRepository
         return Task.FromResult(room.Id);
     }
 
-    private void ValidateState(Room room)
+    private static void ValidateState(Room room)
     {
         if (string.IsNullOrWhiteSpace(room.Name))
         {

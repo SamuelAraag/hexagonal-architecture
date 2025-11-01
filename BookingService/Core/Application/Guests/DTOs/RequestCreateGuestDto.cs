@@ -4,7 +4,7 @@ using Domain.ValueObjects;
 
 namespace Application.Guests.DTOs
 {
-    public class RequestCreateGuestDTO
+    public class RequestCreateGuestDto
     {
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -12,7 +12,7 @@ namespace Application.Guests.DTOs
         public string IdNumber { get; set; }
         public int IdTypeCode { get; set; }
 
-        public static Guest MapToEntity(RequestCreateGuestDTO createGuestDto)
+        public static Guest MapToEntity(RequestCreateGuestDto createGuestDto)
         {
             return new Guest
             {

@@ -4,7 +4,7 @@ using Domain.ValueObjects;
 
 namespace Application.Rooms.DTOs;
 
-public class RequestCreateRoomDTO
+public class RequestCreateRoomDto
 {
     public string Name { get; set; }
     public int Level { get; set; }
@@ -12,7 +12,7 @@ public class RequestCreateRoomDTO
     public decimal Price { get; set; }
     public AcceptedCurrencies Currency { get; set; }
 
-    public static Room MapToEntity(RequestCreateRoomDTO roomRoomDto)
+    public static Room MapToEntity(RequestCreateRoomDto roomRoomDto)
     {
         return new Room
         {

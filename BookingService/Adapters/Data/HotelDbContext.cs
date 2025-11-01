@@ -1,4 +1,5 @@
 ﻿using Data.Guests;
+using Data.Rooms;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

@@ -25,7 +25,7 @@ namespace ApplicationTests
         [Fact]
         public async Task WhenCreateGuest_HasTo_CreateSucess()
         {
-            var guestDTO = new RequestCreateGuestDTO
+            var guestDTO = new RequestCreateGuestDto
             {
                 Name = "Sam",
                 Surname = "Santos",
@@ -47,7 +47,7 @@ namespace ApplicationTests
         [InlineData(null)]
         public async Task WhenCreateGuest_HasTo_ErrorInvalidDocument(string docNumber)
         {
-            var guestDTO = new RequestCreateGuestDTO
+            var guestDTO = new RequestCreateGuestDto
             {
                 Name = "Sam",
                 Surname = "Santos",
@@ -70,7 +70,7 @@ namespace ApplicationTests
         [InlineData(null)]
         public async Task WhenCreateGuest_HasTo_ErrorInvalidName(string name)
         {
-            var guestDTO = new RequestCreateGuestDTO
+            var guestDTO = new RequestCreateGuestDto
             {
                 Name = name,
                 Surname = "Santos",
@@ -98,7 +98,7 @@ namespace ApplicationTests
         [InlineData("samuel@santos,com")]
         public async Task WhenCreateGuest_HasTo_ErrorInvalidEmail(string email)
         {
-            var guestDTO = new RequestCreateGuestDTO
+            var guestDTO = new RequestCreateGuestDto
             {
                 Name = "Samuel",
                 Surname = "Santos",
@@ -121,7 +121,7 @@ namespace ApplicationTests
         [InlineData("samuel+test@company.co")]
         public async Task WhenCreateGuest_HasTo_SuccessValidEmail(string email)
         {
-            var guestDTO = new RequestCreateGuestDTO
+            var guestDTO = new RequestCreateGuestDto
             {
                 Name = "Samuel",
                 Surname = "Santos",
